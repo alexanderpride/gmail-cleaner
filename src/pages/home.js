@@ -1,6 +1,8 @@
 import { useHistory } from "react-router-dom";
 import { GoogleLogin } from 'react-google-login';
+
 export default function Home(props){
+
     const history=useHistory();
     const responseGoogle = (response) => {
         console.log(response)
