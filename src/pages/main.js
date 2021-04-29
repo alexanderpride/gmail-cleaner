@@ -1,7 +1,10 @@
 import React,{useEffect,useState} from 'react'
 import axios from 'axios';
+import { useLocation } from "react-router-dom";
 
-function DisplayEmails({userId,accessToken}) {
+function Main(props) {
+    const location = useLocation();
+    const {userId,accessToken} = location.state;
     const [emails,setEmails] = useState([])
 
     
@@ -25,5 +28,5 @@ function DisplayEmails({userId,accessToken}) {
 
 
 
-export default DisplayEmails
+export default Main
 
