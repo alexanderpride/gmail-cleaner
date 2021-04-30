@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useHistory } from "react-router-dom";
 import { GoogleLogin } from 'react-google-login';
 import Avatar from '@material-ui/core/Avatar';
@@ -16,7 +16,7 @@ function Copyright() {
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                Alex and Kian
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -48,12 +48,18 @@ export default function Home(props){
 
     const classes = useStyles();
     const history = useHistory();
+    const [error, setError] = useState(false);
 
     const responseGoogle = (response) => {
-        console.log(response)
-        if(response.error){
+        console.log(response);
+
+        if (response.error){
+
           console.log("was error");
-        }else{
+          setError(true);
+
+        } else {
+
           console.log("no err");
           console.log(response.qc);
           console.log(response.ft);
@@ -61,7 +67,8 @@ export default function Home(props){
           console.log(response.profileObj);
           const userId = response.profileObj.googleId;
           const accessToken = response.tokenObj.access_token;
-          history.push({pathname: '/main',state:{userId:userId,accessToken:accessToken}})
+          history.push({pathname: '/main', state:{userId:userId,accessToken:accessToken}})
+
         }
       
       }
@@ -73,9 +80,15 @@ export default function Home(props){
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                 </Avatar>
+
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Gmail Cleaner
                 </Typography>
+
+                <Typography component="h5">
+                    Delete and Unsubscribe easily from your Gmail emails
+                </Typography>
+
                 <form className={classes.form} noValidate>
                     <GoogleLogin
                         clientId={process.env.REACT_APP_GOOGLE_CLIENT_KEY}
@@ -99,6 +112,10 @@ export default function Home(props){
                         )}
                     />
                 </form>
+
+                {error && <Typography variant={'subtle1'} color={'error'}>
+                    Unable to connect to your Gmail account, please try again
+                </Typography>}
             </div>
             <Box mt={8}>
                 <Copyright />
