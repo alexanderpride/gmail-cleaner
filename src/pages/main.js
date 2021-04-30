@@ -8,12 +8,6 @@ function Main(props) {
   const [threads, setThread] = useState([]);
   const [emails, setEmails] = useState([]);
   const [group, setGroup] = useState(new Map());
-  const groupBy = function(xs, key) {
-    return xs.reduce(function(rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
-  };
 
   useEffect(() => {
     const instance = axios.create({
@@ -58,12 +52,6 @@ function Main(props) {
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    console.log("group:::: ", group);
-    console.log("group entires: ", group.entries());
-    
-  }, [group]);
-
   return (
     <div style={{ display: "flex" }}>
       <div style={{ flexGrow: 1 }}>
@@ -79,7 +67,6 @@ function Main(props) {
                   : "Loading"}
               </li>
             );
-            // return <p>hi</p>; //<li>{element.snippet.length>100 ? element.snippet.substring(0,100)+"..." :element.snippet }</li>
           })}
         </ul>
       </div>
@@ -99,10 +86,19 @@ function Main(props) {
       </div>
       <div>
         {Array.from(group.entries()).map((value) => {
-            const from = value[0];
-            const messages = value[1];
-            
-          return <div><h1>{from}</h1><ul>{messages.map((messageInfo)=>{return <li>{messageInfo.id}</li>})}</ul></div>
+          const from = value[0];
+          const messages = value[1];
+
+          return (
+            <div>
+              <h1>{from}</h1>
+              <ul>
+                {messages.map((messageInfo) => {
+                  return <li>{messageInfo.id}</li>;
+                })}
+              </ul>
+            </div>
+          );
         })}
       </div>
     </div>
